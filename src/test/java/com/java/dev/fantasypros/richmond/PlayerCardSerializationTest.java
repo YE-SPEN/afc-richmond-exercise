@@ -3,10 +3,10 @@ package com.java.dev.fantasypros.richmond;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.java.dev.fantasypros.richmond.loaders.MatchLoader;
-import com.java.dev.fantasypros.richmond.loaders.PlayerLoader;
 import com.java.dev.fantasypros.richmond.loaders.TeamLoader;
 import com.java.dev.fantasypros.richmond.objects.Season;
 import com.java.dev.fantasypros.richmond.objects.Team;
+import com.java.dev.fantasypros.richmond.serialization.JsonSerializor;
 import com.java.dev.fantasypros.richmond.objects.Player;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,7 +37,7 @@ class PlayerCardSerializationTest {
         Season season = seasons.get(0);
 
         // Call the method to serialize player card
-        String actualJsonOutput = PlayerLoader.serializePlayerCard(richmond, jamieTartt, season);
+        String actualJsonOutput = JsonSerializor.serializePlayerCard(richmond, jamieTartt, season);
 
         // Read the expected JSON output from the file
         String expectedJsonOutput = new String(Files.readAllBytes(Paths.get(EXPECTED_OUTPUT_FILE_PATH))).trim();

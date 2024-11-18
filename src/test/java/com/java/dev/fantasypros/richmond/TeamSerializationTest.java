@@ -3,7 +3,7 @@ package com.java.dev.fantasypros.richmond;
 import com.java.dev.fantasypros.richmond.loaders.MatchLoader;
 import com.java.dev.fantasypros.richmond.loaders.TeamLoader;
 import com.java.dev.fantasypros.richmond.objects.Team;
-
+import com.java.dev.fantasypros.richmond.serialization.JsonSerializor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +28,7 @@ class TeamSerializationTest {
         MatchLoader.loadMatches(team);
 
         // Call the serialization method
-        String actualJsonOutput = TeamLoader.serializeTeamToJson(team);
+        String actualJsonOutput = JsonSerializor.serializeTeamToJson(team);
 
         // Read the expected JSON output from the file
         String expectedJsonOutput = new String(Files.readAllBytes(Paths.get(EXPECTED_OUTPUT_FILE_PATH))).trim();

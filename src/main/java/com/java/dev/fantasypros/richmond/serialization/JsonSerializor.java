@@ -1,4 +1,4 @@
-package com.java.dev.fantasypros.richmond.loaders;
+package com.java.dev.fantasypros.richmond.serialization;
 
 import com.java.dev.fantasypros.richmond.objects.Team;
 import com.java.dev.fantasypros.richmond.objects.Match;
@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class PlayerLoader {
+public class JsonSerializor {
 
     public static String serializePlayerCard(Team team, Player player, Season season) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -93,6 +93,25 @@ public class PlayerLoader {
         return matchesArray;
     }
 
+    public static String serializeTeamToJson(Team team) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("team", team.getTeamName());
+
+        JsonArray playersArray = new JsonArray();
+        
+        // Iterate through each player in the team and add their stats
+        for (Player player : team.getPlayers()) {
+            JsonObject playerJson = serializePlayerObjectToJson(player);
+            playersArray.add(playerJson);
+        }
+
+        jsonObject.add("players", playersArray);
+
+        return gson.toJson(jsonObject);
+    }
+
     // return a Json Object mapped to a single Player object
     public static JsonObject serializePlayerObjectToJson(Player player) {
         JsonObject playerJson = new JsonObject();
@@ -115,10 +134,10 @@ public class PlayerLoader {
         goalJson.addProperty("minute", goal.getGoalMinute());
         goalJson.addProperty("goalType", goal.getGoalType().getType());
             
-        if (goal.getAssist() != null) {
-            goalJson.addProperty("assistedBy", goal.getAssist());
+        if (goal.getAssist() == null) {
+            goalJson.add("assistedBy", JsonNull.INSTANCE);
         } else {
-            goalJson.add("assistedBy", JsonNull.INSTANCE); 
+            goalJson.addProperty("assistedBy", goal.getAssist());
         }
 
         return goalJson;
@@ -127,13 +146,14 @@ public class PlayerLoader {
     // return a Json Object mapped to a single Goal object
     private static JsonObject serializeAssistObjectToJson(Goal goal, String scorer, String assist) {
         JsonObject assistJson = new JsonObject();
-        assistJson.addProperty("scorer", scorer);
-        assistJson.addProperty("minute", goal.getGoalMinute()); 
+        assistJson.addProperty("playerId", scorer);
+        assistJson.addProperty("minute", goal.getGoalMinute());
+        assistJson.addProperty("goalType", goal.getGoalType().getType()); 
 
-        if (goal.getAssist() != null) {
-            assistJson.addProperty("assistedBy", goal.getAssist());
+        if (goal.getAssist() == null) {
+            assistJson.add("assistedBy", JsonNull.INSTANCE);
         } else {
-            assistJson.add("assistedBy", JsonNull.INSTANCE); 
+            assistJson.addProperty("assistedBy", goal.getAssist());
         }
         return assistJson;
     }
