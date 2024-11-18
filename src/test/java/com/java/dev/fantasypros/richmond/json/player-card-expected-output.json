@@ -1,0 +1,64 @@
+{
+    "player": {
+      "id": "JT9",
+      "name": "Jamie Tartt",
+      "position": "Forward",
+      "number": 9,
+      "nationality": "England",
+      "games": 3,
+      "goals": 2,
+      "assists": 1,
+      "points": 3
+    },
+    "matches": [
+      {
+        "homeTeam": "AFC Richmond",
+        "awayTeam": "Tottenham Hotspur",
+        "score": {
+          "home": 3,
+          "away": 2
+        },
+        "goals": [
+          {
+            "playerId": "JT9",
+            "minute": 23,
+            "goalType": "open play",
+            "assistedBy" : "SO21"
+          }
+        ],
+        "assists": [
+          {
+            "playerId": "DR10",
+            "minute": 78,
+            "goalType": "open play",
+            "assistedBy": "JT9"
+          }
+        ]
+      },
+      {
+        "homeTeam": "Arsenal",
+        "awayTeam": "AFC Richmond",
+        "score": {
+          "home": 2,
+          "away": 2
+        },
+        "goals": [
+          {
+            "playerId": "JT9",
+            "minute": 89,
+            "goalType": "free kick",
+            "assistedBy": null
+          }
+        ]
+      },
+      {
+        "homeTeam": "AFC Richmond",
+        "awayTeam": "West Ham United",
+        "score": {
+          "home": 1,
+          "away": 0
+        }
+      }
+    ]
+}
+  

@@ -1,0 +1,94 @@
+{
+    "team": "AFC Richmond",
+    "players": [
+      {
+        "id": "JT9",
+        "name": "Jamie Tartt",
+        "position": "Forward",
+        "number": 9,
+        "nationality": "England",
+        "games": 3,
+        "goals": 2,
+        "assists": 1,
+        "points": 3
+      },
+      {
+        "id": "DR10",
+        "name": "Dani Rojas",
+        "position": "Forward",
+        "number": 10,
+        "nationality": "Mexico",
+        "games": 3,
+        "goals": 3,
+        "assists": 0,
+        "points": 3
+      },
+      {
+        "id": "SO21",
+        "name": "Sam Obisanya",
+        "position": "Right Wing",
+        "number": 21,
+        "nationality": "Nigeria",
+        "games": 3,
+        "goals": 1,
+        "assists": 1,
+        "points": 2
+      },
+      {
+        "id": "IM6",
+        "name": "Isaac McAdoo",
+        "position": "Center Back",
+        "number": 6,
+        "nationality": "England",
+        "games": 3,
+        "goals": 0,
+        "assists": 0,
+        "points": 0
+      },
+      {
+        "id": "CH7",
+        "name": "Colin Hughes",
+        "position": "Midfielder",
+        "number": 7,
+        "nationality": "Wales",
+        "games": 3,
+        "goals": 0,
+        "assists": 1,
+        "points": 1
+      },
+      {
+        "id": "RM16",
+        "name": "Richard Montlaur",
+        "position": "Midfielder",
+        "number": 16,
+        "nationality": "France",
+        "games": 3,
+        "goals": 0,
+        "assists": 1,
+        "points": 1
+      },
+      {
+        "id": "JK23",
+        "name": "Jan Maas",
+        "position": "Defender",
+        "number": 23,
+        "nationality": "Netherlands",
+        "games": 3,
+        "goals": 0,
+        "assists": 0,
+        "points": 0
+      },
+      {
+        "id": "TZ1",
+        "name": "Thierry Zoreaux",
+        "position": "Goalkeeper",
+        "number": 1,
+        "nationality": "Canada",
+        "games": 3,
+        "goals": 0,
+        "assists": 0,
+        "points": 0
+      }
+    ]
+  }
+  
