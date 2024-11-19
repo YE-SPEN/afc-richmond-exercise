@@ -36,12 +36,17 @@ public class MatchLoader {
                 String homeTeam = matchNode.get("homeTeam").getAsString();
                 String awayTeam = matchNode.get("awayTeam").getAsString();
                 LocalDate date = LocalDate.parse(matchNode.get("date").getAsString());
-
+    
                 if (team.getTeamName().equals(homeTeam) || team.getTeamName().equals(awayTeam)) {
                     Match match = new Match(id, homeTeam, awayTeam, date);
-                    match.setScore(0, 0);
-                    team.incrementGamesPlayed();
 
+                    team.incrementGamesPlayed();
+                    
+                    JsonObject scoreNode = matchNode.getAsJsonObject("score");
+                    int homeScore = scoreNode != null ? scoreNode.get("home").getAsInt() : 0;
+                    int awayScore = scoreNode != null ? scoreNode.get("away").getAsInt() : 0;
+                    match.setScore(homeScore, awayScore);
+    
                     JsonArray goalArray = matchNode.getAsJsonArray("goals");
                     for (JsonElement goalElement : goalArray) {
                         Goal goal = loadGoal(goalElement.getAsJsonObject());
@@ -53,7 +58,7 @@ public class MatchLoader {
             }
         }
         team.addSeason(season);
-    }
+    }    
 
     public static Goal loadGoal(JsonObject goalNode) {
         String team = goalNode.get("team").getAsString();
@@ -65,4 +70,5 @@ public class MatchLoader {
         Goal.GoalType type = Goal.resolveGoalType(goalNode.get("type").getAsString());
         return assist != null ? new Goal(team, scorer, minute, type, assist) : new Goal(team, scorer, minute, type);
     }
+    
 }

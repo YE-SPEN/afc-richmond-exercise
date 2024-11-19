@@ -1,16 +1,9 @@
 package com.java.dev.fantasypros.richmond.serialization;
 
 import com.java.dev.fantasypros.richmond.exceptions.SerializationFailureException;
-import com.java.dev.fantasypros.richmond.objects.Team;
-import com.java.dev.fantasypros.richmond.objects.Match;
-import com.java.dev.fantasypros.richmond.objects.Player;
-import com.java.dev.fantasypros.richmond.objects.Goal;
-import com.java.dev.fantasypros.richmond.objects.Goal.GoalType;
-import com.java.dev.fantasypros.richmond.objects.Season;
+import com.java.dev.fantasypros.richmond.objects.*;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -18,7 +11,7 @@ public class JsonSerializer {
 
     public static String serializePlayerCard(Team team, Player player, Season season) throws SerializationFailureException {
         try {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
         
             JsonObject playerCardJson = new JsonObject();
     
@@ -63,15 +56,15 @@ public class JsonSerializer {
     
                 for (Goal goal : match.getGoals()) {
                     String scorer = goal.getScorer();
-                    String assist = goal.getAssist() != null ? goal.getAssist() : null;
+                    String assist = goal.getAssist();
     
-                    if (scorer != null && scorer.equals(player.getId())) {
+                    if (scorer.equals(player.getId())) {
                         goalsArray.add(serializeGoalObjectToJson(goal));
                     }
-    
-                    if (assist != null && assist.equals(player.getId())) {
+                    else if (assist != null && assist.equals(player.getId())) {
                         assistsArray.add(serializeGoalObjectToJson(goal));
-                    }
+                    }    
+
                 }
     
                 if (goalsArray.size() > 0) {
@@ -127,21 +120,17 @@ public class JsonSerializer {
         return playerJson;
     }
     
-    // return a Json Object mapped to a single Goal object
-    private static JsonObject serializeGoalObjectToJson(Goal goal) {
-        JsonObject goalJson = new JsonObject();
-        goalJson.addProperty("playerId", goal.getScorer());
-        goalJson.addProperty("minute", goal.getGoalMinute());
-        goalJson.addProperty("goalType", goal.getGoalType().getType());
-            
-        if (goal.getAssist() == null) {
-            goalJson.add("assistedBy", JsonNull.INSTANCE);
-        } else {
-            goalJson.addProperty("assistedBy", goal.getAssist());
-        }
+// return a Json Object mapped to a single Goal object
+private static JsonObject serializeGoalObjectToJson(Goal goal) {
+    JsonObject goalJson = new JsonObject();
+    goalJson.addProperty("playerId", goal.getScorer());
+    goalJson.addProperty("minute", goal.getGoalMinute());
+    goalJson.addProperty("goalType", goal.getGoalType().getType());
+    goalJson.addProperty("assistedBy", goal.getAssist());
 
-        return goalJson;
-    }
+    return goalJson;
+}
+
 
     private static JsonObject serializeScoreObjectToJson(Match match) {
         JsonObject scoreJson = new JsonObject();
