@@ -6,6 +6,7 @@ Project Structure: Maven
 Server Infrastructure: Spring
 IDE: VS Code
 Local Port: 8080
+JSON Parsing Library: Google Gson
 
 Commands:
 Build: mvn clean install
