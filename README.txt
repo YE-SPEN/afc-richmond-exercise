@@ -4,6 +4,7 @@ AFC Richmond Java Exercise
 Completed by: Eric Spensieri
 Project Structure: Maven
 Server Infrastructure: Spring
+IDE: VS Code
 
 Commands:
 Build: mvn clean install
