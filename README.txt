@@ -5,6 +5,7 @@ Completed by: Eric Spensieri
 Project Structure: Maven
 Server Infrastructure: Spring
 IDE: VS Code
+Local Port: 8080
 
 Commands:
 Build: mvn clean install
