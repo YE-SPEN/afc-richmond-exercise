@@ -2,6 +2,7 @@ package com.java.dev.fantasypros.richmond.serialization;
 
 import com.java.dev.fantasypros.richmond.exceptions.SerializationFailureException;
 import com.java.dev.fantasypros.richmond.objects.*;
+import com.java.dev.fantasypros.richmond.objects.Goal.GoalType;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.Gson;
