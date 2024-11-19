@@ -2,13 +2,15 @@ package com.java.dev.fantasypros.richmond;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.java.dev.fantasypros.richmond.exceptions.SerializationFailureException;
 import com.java.dev.fantasypros.richmond.loaders.MatchLoader;
 import com.java.dev.fantasypros.richmond.loaders.TeamLoader;
 import com.java.dev.fantasypros.richmond.objects.Season;
 import com.java.dev.fantasypros.richmond.objects.Team;
-import com.java.dev.fantasypros.richmond.serialization.JsonSerializor;
+import com.java.dev.fantasypros.richmond.serialization.JsonSerializer;
 import com.java.dev.fantasypros.richmond.objects.Player;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.Null;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
@@ -28,7 +30,7 @@ class PlayerCardSerializationTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void testSerializePlayerCardToJson() throws IOException {
+    void testSerializePlayerCardToJson() throws IOException, SerializationFailureException {
         // Load the pre-initialized team from RichmondApplication
         Team richmond = TeamLoader.loadTeam();
         MatchLoader.loadMatches(richmond);
@@ -37,7 +39,8 @@ class PlayerCardSerializationTest {
         Season season = seasons.get(0);
 
         // Call the method to serialize player card
-        String actualJsonOutput = JsonSerializor.serializePlayerCard(richmond, jamieTartt, season);
+        String actualJsonOutput = JsonSerializer.serializePlayerCard(richmond, jamieTartt, season);
+        
 
         // Read the expected JSON output from the file
         String expectedJsonOutput = new String(Files.readAllBytes(Paths.get(EXPECTED_OUTPUT_FILE_PATH))).trim();

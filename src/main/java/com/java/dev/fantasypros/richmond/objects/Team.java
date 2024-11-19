@@ -8,12 +8,6 @@ public class Team {
     private List<Player> players;
     private List<Season> seasons;
 
-    public Team() {
-        this.team = "";
-        this.players = new ArrayList<Player>();
-        this.seasons = new ArrayList<Season>();
-    }
-
     public Team(String name) {
         this.team = name;
         this.players = new ArrayList<Player>();

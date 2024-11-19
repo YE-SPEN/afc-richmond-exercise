@@ -76,7 +76,7 @@ public class Match {
     
     public void updateScore(String scoringTeam) {
         if (scoringTeam.equals(this.homeTeam)) {
-            this.score.incrementHomeScore();;
+            this.score.incrementHomeScore();
         }
         else if (scoringTeam.equals(this.awayTeam)) {
             this.score.incrementAwayScore();

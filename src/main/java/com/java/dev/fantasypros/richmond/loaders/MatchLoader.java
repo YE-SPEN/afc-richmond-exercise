@@ -59,7 +59,7 @@ public class MatchLoader {
                 // Check if the input team is involved in the match
                 if (team.getTeamName().equals(homeTeam) || team.getTeamName().equals(awayTeam)) {
                     Match match = new Match(id, homeTeam, awayTeam, date);
-                    incrementGamesPlayed(team);
+                    incrementGamesPlayed(team); // we assume all players play every game in this exercise
 
                     JsonNode goalArray = matchNode.get("goals");
                     for (JsonNode goalNode : goalArray) {

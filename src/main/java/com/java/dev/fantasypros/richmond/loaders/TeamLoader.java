@@ -2,10 +2,6 @@ package com.java.dev.fantasypros.richmond.loaders;
 
 import com.java.dev.fantasypros.richmond.objects.Player;
 import com.java.dev.fantasypros.richmond.objects.Team;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
@@ -26,40 +22,77 @@ public class TeamLoader {
         Team team = null;
 
         try {
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(PLAYERS_JSON_URL))
-                    .GET()
-                    .build();
+            // Fetch the JSON response from the endpoint
+            String jsonResponse = fetchPlayerData();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
+            // Parse JSON response
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(response.body());
-            
+            JsonNode rootNode = objectMapper.readTree(jsonResponse);
+
+            // Validate presence of "team" field
+            if (rootNode == null || !rootNode.has("team") || rootNode.get("team").asText().isEmpty()) {
+                throw new RuntimeException("Missing or empty 'team' field in JSON response.");
+            }
+
             // Initialize Team object with the team name from JSON
             String teamName = rootNode.get("team").asText();
             team = new Team(teamName);
 
+            // Validate presence of "players" array
+            if (!rootNode.has("players") || !rootNode.get("players").isArray()) {
+                throw new RuntimeException("Missing or invalid 'players' array in JSON response.");
+            }
+
             // Extract players array
             JsonNode playersArray = rootNode.get("players");
 
-            if (playersArray != null && playersArray.isArray()) {
-                for (JsonNode playerNode : playersArray) {
+            // Process each player node
+            for (JsonNode playerNode : playersArray) {
+                try {
                     Player player = processPlayer(playerNode);
-                    players.add(player);
+                    if (player != null) {
+                        players.add(player);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error processing player: " + e.getMessage());
                 }
             }
 
-            // Add players to the team
             team.setPlayers(players);
 
-        } catch (IOException | InterruptedException e) {
-            System.err.println("Error loading players: " + e.getMessage());
+            if (players.isEmpty()) {
+                System.err.println("Warning: No players were loaded.");
+            }
+
+        } catch (IOException e) {
+            System.err.println("I/O Error while loading players: " + e.getMessage());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Request interrupted: " + e.getMessage());
+        } catch (RuntimeException e) {
+            System.err.println("Data Error: " + e.getMessage());
         }
 
         return team;
     }
+
+    // Method to fetch player data from the endpoint
+    private static String fetchPlayerData() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(PLAYERS_JSON_URL))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed to fetch data. HTTP status code: " + response.statusCode());
+        }
+
+        return response.body();
+    }
+
 
     public static Player processPlayer(JsonNode playerNode) {
         String id = playerNode.get("id").asText();
@@ -73,7 +106,7 @@ public class TeamLoader {
         return player;
     }
 
-    public static String serializeTeamToJson(Team team) {
+    /*public static String serializeTeamToJson(Team team) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jsonObject = new JsonObject();
 
@@ -100,7 +133,7 @@ public class TeamLoader {
         jsonObject.add("players", playersArray);
 
         return gson.toJson(jsonObject);
-    }
+    }*/
 }
 
 

@@ -14,10 +14,6 @@ public class Score {
         this.away = awayScore;
     }
 
-    public String getScore() {
-        return this.home + " - " + this.away;
-    }
-
     public int getHomeScore() {
         return this.home;
     }
@@ -44,6 +40,6 @@ public class Score {
 
     @Override
     public String toString() {
-        return getScore();
+        return this.home + " - " + this.away;
     }
 }

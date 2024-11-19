@@ -1,5 +1,6 @@
 package com.java.dev.fantasypros.richmond.serialization;
 
+import com.java.dev.fantasypros.richmond.exceptions.SerializationFailureException;
 import com.java.dev.fantasypros.richmond.objects.Team;
 import com.java.dev.fantasypros.richmond.objects.Match;
 import com.java.dev.fantasypros.richmond.objects.Player;
@@ -8,27 +9,32 @@ import com.java.dev.fantasypros.richmond.objects.Season;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class JsonSerializor {
+public class JsonSerializer {
 
-    public static String serializePlayerCard(Team team, Player player, Season season) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    public static String serializePlayerCard(Team team, Player player, Season season) throws SerializationFailureException {
+        try {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
-        // Create a main JSON object to hold player and match information
-        JsonObject playerCardJson = new JsonObject();
-
-        // Serialize player details
-        JsonObject playerJson = serializePlayerObjectToJson(player);
-        playerCardJson.add("player", playerJson);
-
-        // Serialize match objects related to the player
-        JsonArray matchesArray = serializeMatchObjectsToJson(team, player, season);
-        playerCardJson.add("matches", matchesArray);
-
-        // Convert to JSON string using Gson
-        return gson.toJson(playerCardJson);
+            // Create a main JSON object to hold player and match information
+            JsonObject playerCardJson = new JsonObject();
+    
+            // Serialize player details
+            JsonObject playerJson = serializePlayerObjectToJson(player);
+            playerCardJson.add("player", playerJson);
+    
+            // Serialize match objects related to the player
+            JsonArray matchesArray = serializeMatchObjectsToJson(team, player, season);
+            playerCardJson.add("matches", matchesArray);
+    
+            // Convert to JSON string using Gson
+            return gson.toJson(playerCardJson);
+        } catch (NullPointerException e) {
+            throw new SerializationFailureException(e.getMessage());
+        }
     }
 
     public static JsonArray serializeMatchObjectsToJson(Team team, Player player, Season season) {
@@ -93,23 +99,28 @@ public class JsonSerializor {
         return matchesArray;
     }
 
-    public static String serializeTeamToJson(Team team) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonObject jsonObject = new JsonObject();
-
-        jsonObject.addProperty("team", team.getTeamName());
-
-        JsonArray playersArray = new JsonArray();
-        
-        // Iterate through each player in the team and add their stats
-        for (Player player : team.getPlayers()) {
-            JsonObject playerJson = serializePlayerObjectToJson(player);
-            playersArray.add(playerJson);
+    public static String serializeTeamToJson(Team team) throws SerializationFailureException {
+        try {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            JsonObject jsonObject = new JsonObject();
+    
+            jsonObject.addProperty("team", team.getTeamName());
+    
+            JsonArray playersArray = new JsonArray();
+            
+            // Iterate through each player in the team and add their stats
+            for (Player player : team.getPlayers()) {
+                JsonObject playerJson = serializePlayerObjectToJson(player);
+                playersArray.add(playerJson);
+            }
+    
+            jsonObject.add("players", playersArray);
+    
+            return gson.toJson(jsonObject);
+        } catch (NullPointerException e) {
+            throw new SerializationFailureException(e.getMessage());
         }
 
-        jsonObject.add("players", playersArray);
-
-        return gson.toJson(jsonObject);
     }
 
     // return a Json Object mapped to a single Player object
