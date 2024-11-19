@@ -1,5 +1,10 @@
 package com.java.dev.fantasypros.richmond.objects;
 
+/*
+ *In this object type we are storing the player statistics directly on the player object... this is because this exercise only supports a single season
+ *A potential upgrade here is to store player statistics in their own season object similar to how the Team matches are being handled
+ */
+
 public class Player {
     private String id;
     private String name;
@@ -23,6 +28,7 @@ public class Player {
         this.points = 0; 
     }
 
+    // second overloaded constructor to create a player for the first time and generate their playerId
     public Player(String playerName, String playerPos, int jerseyNum, String country) {
         this.id = getInitials(playerName) + jerseyNum;
         this.name = playerName;

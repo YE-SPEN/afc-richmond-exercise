@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Season {
-    private String season;
+    private String season; // In real life this probably should not be stored as a string
     private List<Match> matches;
 
     public Season(String season) {

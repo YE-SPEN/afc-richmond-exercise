@@ -1,5 +1,10 @@
 package com.java.dev.fantasypros.richmond.objects;
 
+/*
+ * Embedded in this Goal object file is a GoalType enum to restrict the goal types to only open play, free kick, or penalty
+ * Goals objects constructed with an invalid GoalType default to open play 
+ */
+
 public class Goal {
     private String playerId;
     private int minute;

@@ -40,7 +40,7 @@ public class MatchLoader {
                 if (team.getTeamName().equals(homeTeam) || team.getTeamName().equals(awayTeam)) {
                     Match match = new Match(id, homeTeam, awayTeam, date);
 
-                    team.incrementGamesPlayed();
+                    team.incrementGamesPlayed();  // here we are assuming that every player gets a game played for each match
                     
                     JsonObject scoreNode = matchNode.getAsJsonObject("score");
                     int homeScore = scoreNode != null ? scoreNode.get("home").getAsInt() : 0;

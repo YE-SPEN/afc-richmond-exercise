@@ -20,6 +20,12 @@ import java.util.List;
 @RestController
 public class RichmondController {
 
+    /* 
+    *redirecting the main URL to the team output since we have no implementation for a home route,
+    *both of the main endpoints will throw a 500 server error if data fails to load or serialize
+    *to discuss error policy during code review
+    */ 
+
     @GetMapping("/")
     public String getHome() {
         return "redirect:/team";

@@ -5,6 +5,11 @@ import java.util.List;
 
 import com.java.dev.fantasypros.richmond.objects.Goal.GoalType;
 
+/*
+ * For the purpose of this exercise there is only one season (2023-24) but this object type can support the addition of multiple seasons
+ * each with its own match log
+ */
+
 public class Team {
     private String team;
     private List<Player> players;

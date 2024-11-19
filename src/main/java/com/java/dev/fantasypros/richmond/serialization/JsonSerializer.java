@@ -8,6 +8,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/*
+ * This file stores a method to serialize each of my object types that are used in any endpoint. 
+ * They are modular to facilitate writing additional unit tests
+ */
+
 public class JsonSerializer {
 
     public static String serializePlayerCard(Team team, Player player, Season season) throws SerializationFailureException {
