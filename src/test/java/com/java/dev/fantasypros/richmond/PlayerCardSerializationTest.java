@@ -10,7 +10,6 @@ import com.java.dev.fantasypros.richmond.objects.Team;
 import com.java.dev.fantasypros.richmond.serialization.JsonSerializer;
 import com.java.dev.fantasypros.richmond.objects.Player;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.Null;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
@@ -31,21 +30,17 @@ class PlayerCardSerializationTest {
     @Test
     @SuppressWarnings("unchecked")
     void testSerializePlayerCardToJson() throws IOException, SerializationFailureException {
+        
         // Load the pre-initialized team from RichmondApplication
         Team richmond = TeamLoader.loadTeam();
-        MatchLoader.loadMatches(richmond);
+        MatchLoader.fetchMatchData(richmond);
         Player jamieTartt = richmond.getPlayerById(PLAYER_ID);
         List<Season> seasons = richmond.getSeasons();
         Season season = seasons.get(0);
 
-        // Call the method to serialize player card
+        String expectedJsonOutput = new String(Files.readAllBytes(Paths.get(EXPECTED_OUTPUT_FILE_PATH))).trim();
         String actualJsonOutput = JsonSerializer.serializePlayerCard(richmond, jamieTartt, season);
         
-
-        // Read the expected JSON output from the file
-        String expectedJsonOutput = new String(Files.readAllBytes(Paths.get(EXPECTED_OUTPUT_FILE_PATH))).trim();
-
-        // Create an ObjectMapper instance with pretty printing enabled
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
@@ -53,13 +48,12 @@ class PlayerCardSerializationTest {
         Map<String, Object> expectedMap = objectMapper.readValue(expectedJsonOutput, Map.class);
         Map<String, Object> actualMap = objectMapper.readValue(actualJsonOutput, Map.class);
 
-        // Pretty-print the expected and actual JSON strings
         String prettyExpectedJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(expectedMap);
         String prettyActualJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(actualMap);
 
         // Compare the actual and expected outputs
         try {
-            assertEquals(expectedMap, actualMap, "The serialized player card JSON output does not match the expected output.");
+            assertEquals(expectedMap, actualMap, "The serialized player card JSON output  the expected output.");
         } catch (AssertionError e) {
             System.out.println("Expected JSON (Pretty-Printed):\n" + prettyExpectedJson);
             System.out.println("Actual JSON (Pretty-Printed):\n" + prettyActualJson);

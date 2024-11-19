@@ -67,7 +67,6 @@ public class Match {
 
     public void recordGoal(Goal goal) {
         this.goals.add(goal);
-        updateScore(goal.getTeam());
     }
 
     public List<Goal> getGoals() {
@@ -81,6 +80,27 @@ public class Match {
         else if (scoringTeam.equals(this.awayTeam)) {
             this.score.incrementAwayScore();
         }
+    }
+
+    public boolean homeTeamWon() {
+        return this.score.getHomeScore() > this.score.getAwayScore();
+    }
+
+    public boolean awayTeamWon() {
+        return this.score.getHomeScore() < this.score.getAwayScore();
+    }
+
+    public char getResult(Team team) {
+        if (this.score.getHomeScore() == this.score.getAwayScore()) {
+            return 'D';
+        }
+        if (team.getTeamName().equals(homeTeam) && this.homeTeamWon() || team.getTeamName().equals(awayTeam) && this.awayTeamWon()) {
+            return 'W';
+        }
+        if (team.getTeamName().equals(homeTeam) && !this.homeTeamWon() || team.getTeamName().equals(awayTeam) && !this.awayTeamWon()) {
+            return 'L';
+        }
+        return '-';
     }
 
     @Override

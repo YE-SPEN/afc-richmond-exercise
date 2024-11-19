@@ -3,6 +3,8 @@ package com.java.dev.fantasypros.richmond.objects;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.java.dev.fantasypros.richmond.objects.Goal.GoalType;
+
 public class Team {
     private String team;
     private List<Player> players;
@@ -46,6 +48,15 @@ public class Team {
         this.seasons.add(year);
     }
 
+    public static Season findSeason(Team team, Season season) {
+        for (Season teamSeason : team.getSeasons()) {
+            if (teamSeason.getSeason().equals(season.getSeason())) {
+                return season;
+            }
+        }
+        return null;
+    }
+
     public Player getPlayerById(String id) {
         for (Player player : this.players) {
             if (id.equals(player.getId())) {
@@ -53,6 +64,38 @@ public class Team {
             }
         }
         return null;
+    }
+
+    public void updatePlayerStats(Goal goal) {
+        this.getPlayers().forEach(player -> {
+            if (player.getId().equals(goal.getScorer())) {
+                player.recordGoal();
+            }
+    
+            if (goal.getAssist() != null && player.getId().equals(goal.getAssist())) {
+                player.recordAssist();
+            }
+        });
+    }
+
+    public void incrementGamesPlayed() {
+        this.getPlayers().forEach(player -> {
+            player.recordGame();
+        });
+    }
+
+    public int countGoalsByType(Season season, String playerId, GoalType goalType) {
+    int goalCount = 0;
+
+    for (Match match : season.getMatches()) {
+        for (Goal goal : match.getGoals()) {
+            if (goal.getScorer().equals(playerId) && goal.getGoalType().equals(goalType)) {
+                goalCount++;
+            }
+        }
+    }
+
+    return goalCount;
     }
 
     @Override

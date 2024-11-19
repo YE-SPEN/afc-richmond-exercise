@@ -10,10 +10,16 @@
       "assists": 1,
       "points": 3
     },
+    "goalBreakdown": {
+      "open play": 1,
+      "free kick": 1,
+      "penalty": 0
+    },
     "matches": [
       {
         "homeTeam": "AFC Richmond",
         "awayTeam": "Tottenham Hotspur",
+        "result": "W",
         "score": {
           "home": 3,
           "away": 2
@@ -38,6 +44,7 @@
       {
         "homeTeam": "Arsenal",
         "awayTeam": "AFC Richmond",
+        "result": "D",
         "score": {
           "home": 2,
           "away": 2
@@ -54,6 +61,7 @@
       {
         "homeTeam": "AFC Richmond",
         "awayTeam": "West Ham United",
+        "result": "W",
         "score": {
           "home": 1,
           "away": 0

@@ -5,6 +5,7 @@ import com.java.dev.fantasypros.richmond.objects.Team;
 import com.java.dev.fantasypros.richmond.objects.Match;
 import com.java.dev.fantasypros.richmond.objects.Player;
 import com.java.dev.fantasypros.richmond.objects.Goal;
+import com.java.dev.fantasypros.richmond.objects.Goal.GoalType;
 import com.java.dev.fantasypros.richmond.objects.Season;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonNull;
@@ -19,14 +20,14 @@ public class JsonSerializer {
         try {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
-            // Create a main JSON object to hold player and match information
             JsonObject playerCardJson = new JsonObject();
     
-            // Serialize player details
             JsonObject playerJson = serializePlayerObjectToJson(player);
             playerCardJson.add("player", playerJson);
+
+            JsonObject goalBreakdownJson = serializeGoalBreakdownToJson(season, player, team);
+            playerCardJson.add("goalBreakdown", goalBreakdownJson);
     
-            // Serialize match objects related to the player
             JsonArray matchesArray = serializeMatchObjectsToJson(team, player, season);
             playerCardJson.add("matches", matchesArray);
     
@@ -40,50 +41,39 @@ public class JsonSerializer {
     public static JsonArray serializeMatchObjectsToJson(Team team, Player player, Season season) {
         JsonArray matchesArray = new JsonArray();
     
-        // Ensure matchedSeason is fetched correctly
-        Season matchedSeason = findSeason(team, season);
+        Season matchedSeason = Team.findSeason(team, season);
         if (matchedSeason == null) {
             return matchesArray; 
         }
     
-        // Iterate over each match in the team's list of matches for the correct season
         for (Match match : matchedSeason.getMatches()) {
     
-            // Check if the team played in this match
             if (match.getHomeTeam().equals(team.getTeamName()) || match.getAwayTeam().equals(team.getTeamName())) {
-                // Create a JSON object for the current match
+
                 JsonObject matchJson = new JsonObject();
                 matchJson.addProperty("homeTeam", match.getHomeTeam());
                 matchJson.addProperty("awayTeam", match.getAwayTeam());
+                matchJson.addProperty("result", match.getResult(team));
     
-                // Add score details to the match JSON object with null check for score
-                JsonObject scoreJson = new JsonObject();
-                if (match.getScore() != null) {
-                    scoreJson.addProperty("home", match.getScore().getHomeScore());
-                    scoreJson.addProperty("away", match.getScore().getAwayScore());
-                }
+                JsonObject scoreJson = serializeScoreObjectToJson(match);
                 matchJson.add("score", scoreJson);
     
-                // Initialize arrays for goals and assists
                 JsonArray goalsArray = new JsonArray();
                 JsonArray assistsArray = new JsonArray();
     
-                // Iterate over the goals in the current match
                 for (Goal goal : match.getGoals()) {
                     String scorer = goal.getScorer();
                     String assist = goal.getAssist() != null ? goal.getAssist() : null;
     
-                    // Check if the player scored or assisted the goal
                     if (scorer != null && scorer.equals(player.getId())) {
-                        goalsArray.add(serializeGoalObjectToJson(goal, scorer));
+                        goalsArray.add(serializeGoalObjectToJson(goal));
                     }
     
                     if (assist != null && assist.equals(player.getId())) {
-                        assistsArray.add(serializeAssistObjectToJson(goal, scorer, assist));
+                        assistsArray.add(serializeGoalObjectToJson(goal));
                     }
                 }
     
-                // add goal & assist arrays to Json object if non-empty
                 if (goalsArray.size() > 0) {
                     matchJson.add("goals", goalsArray);
                 }
@@ -91,7 +81,6 @@ public class JsonSerializer {
                     matchJson.add("assists", assistsArray);
                 }
     
-                // Add the match JSON object to the matches array
                 matchesArray.add(matchJson);
             }   
         }
@@ -138,10 +127,10 @@ public class JsonSerializer {
         return playerJson;
     }
     
-        // return a Json Object mapped to a single Goal object
-    private static JsonObject serializeGoalObjectToJson(Goal goal, String scorer) {
+    // return a Json Object mapped to a single Goal object
+    private static JsonObject serializeGoalObjectToJson(Goal goal) {
         JsonObject goalJson = new JsonObject();
-        goalJson.addProperty("playerId", scorer);
+        goalJson.addProperty("playerId", goal.getScorer());
         goalJson.addProperty("minute", goal.getGoalMinute());
         goalJson.addProperty("goalType", goal.getGoalType().getType());
             
@@ -154,28 +143,25 @@ public class JsonSerializer {
         return goalJson;
     }
 
-    // return a Json Object mapped to a single Goal object
-    private static JsonObject serializeAssistObjectToJson(Goal goal, String scorer, String assist) {
-        JsonObject assistJson = new JsonObject();
-        assistJson.addProperty("playerId", scorer);
-        assistJson.addProperty("minute", goal.getGoalMinute());
-        assistJson.addProperty("goalType", goal.getGoalType().getType()); 
-
-        if (goal.getAssist() == null) {
-            assistJson.add("assistedBy", JsonNull.INSTANCE);
-        } else {
-            assistJson.addProperty("assistedBy", goal.getAssist());
+    private static JsonObject serializeScoreObjectToJson(Match match) {
+        JsonObject scoreJson = new JsonObject();
+        if (match.getScore() != null) {
+            scoreJson.addProperty("home", match.getScore().getHomeScore());
+            scoreJson.addProperty("away", match.getScore().getAwayScore());
         }
-        return assistJson;
+        return scoreJson;
     }
 
-    public static Season findSeason(Team team, Season season) {
-        for (Season teamSeason : team.getSeasons()) {
-            if (teamSeason.getSeason().equals(season.getSeason())) {
-                return season;
-            }
-        }
-        return null;
+private static JsonObject serializeGoalBreakdownToJson(Season season, Player player, Team team) {
+    JsonObject scoreJson = new JsonObject();
+
+    for (GoalType goalType : GoalType.values()) {
+        int goalCount = team.countGoalsByType(season, player.getId(), goalType);
+        scoreJson.addProperty(goalType.getType(), goalCount);
     }
+
+    return scoreJson;
+}
+
 
 }

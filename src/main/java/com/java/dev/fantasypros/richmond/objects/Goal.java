@@ -60,8 +60,8 @@ public class Goal {
 
     public enum GoalType {
         OPEN_PLAY("open play"),
-        PENALTY("penalty"),
-        FREE_KICK("free kick");
+        FREE_KICK("free kick"),
+        PENALTY("penalty");
 
         private String type;
 
@@ -83,11 +83,20 @@ public class Goal {
         }
     }
     
-
     public GoalType getGoalType() {
         return this.type;
     }
     
+    public static GoalType resolveGoalType(String type) {
+        GoalType goalType;
+        try {
+            goalType = GoalType.fromString(type);
+        } catch (IllegalArgumentException e) {
+            goalType = GoalType.OPEN_PLAY;
+            System.err.println("Unknown goal type: " + type + ", defaulting to open play.");
+        }
+        return goalType;
+    }
 
     public void setGoalType(GoalType goalType) {
         this.type = goalType;

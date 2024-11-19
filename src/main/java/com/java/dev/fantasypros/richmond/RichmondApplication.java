@@ -17,7 +17,7 @@ public class RichmondApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RichmondApplication.class, args);
         team = TeamLoader.loadTeam();
-        MatchLoader.loadMatches(team);
+        MatchLoader.fetchMatchData(team);
 	}
 	
 	public static Team getTeam() {

@@ -20,9 +20,9 @@ import java.util.List;
 @RestController
 public class RichmondController {
 
-    @GetMapping("/error")
+    @GetMapping("/")
     public String getHome() {
-        return "";
+        return "redirect:/team";
     }
 
     @GetMapping(path="/team", produces="application/json; charset=utf-8")
