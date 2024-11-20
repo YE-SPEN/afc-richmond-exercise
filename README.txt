@@ -37,7 +37,7 @@ JSON Serializer
     1. JsonSerializer.java (Responsible for converting all Java objects into JSON)
 
 Unit Test Files
-    1. TeamSerializationTest.java (Responsible for comapring JSON output for the Team Roster page)
+    1. TeamSerializationTest.java (Responsible for comparing JSON output for the Team Roster page)
     2. PlayerCardSerializationTest.java (Responsible for comparing JSON output for the Player Card page)
     3. Expected Output JSON files for /team and /player/JT9 (Jamie Tartt)
 
