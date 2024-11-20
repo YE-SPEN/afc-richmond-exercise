@@ -34,7 +34,7 @@ JSON Loader Files
     2. MatchLoader.java (Takes a Team object as argument and loads the matches and associated goals from the second FP endpoint)
 
 JSON Serializer
-    1. JsonSerializaer.java (Responsible for converting all Java objects into JSON)
+    1. JsonSerializer.java (Responsible for converting all Java objects into JSON)
 
 Unit Test Files
     1. TeamSerializationTest.java (Responsible for comapring JSON output for the Team Roster page)
