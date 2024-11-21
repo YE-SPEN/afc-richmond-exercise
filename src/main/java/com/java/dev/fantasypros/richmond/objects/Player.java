@@ -72,36 +72,52 @@ public class Player {
         this.position = newPos;
     }
 
-    public void setJerseyNum(int newNum) {
-        this.number = newNum;
-    }
-
-    public int getNum() {
+    public int getJerseyNum() {
         return this.number;
     }
 
-    public void setNationality(String newNat) {
-        this.nationality = newNat;
+    public void setJerseyNum(int newNum) {
+        this.number = newNum;
     }
 
     public String getNationality() {
         return this.nationality;
     }
 
+    public void setNationality(String newNat) {
+        this.nationality = newNat;
+    }
+
     public int getGamesPlayed() {
         return this.games;
+    }
+
+    public void setGamesPlayed(int gp) {
+        this.games = gp;
     }
 
     public int getGoals() {
         return this.goals;
     }
 
+    public void setGoals(int g) {
+        this.goals = g;
+    }
+
     public int getAssists() {
         return this.assists;
     }
 
+    public void setAssists(int a) {
+        this.assists = a;
+    }
+
     public int getPoints() {
         return this.points;
+    }
+
+    public void setPoints(int pts) {
+        this.points = pts;
     }
 
     public void recordGame() {

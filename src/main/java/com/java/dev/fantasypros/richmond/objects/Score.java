@@ -4,6 +4,7 @@ public class Score {
     private int home;
     private int away;
 
+    // default constructor that can be called to create a match object that has not happened yet
     public Score() {
         this.home = 0;
         this.away = 0;

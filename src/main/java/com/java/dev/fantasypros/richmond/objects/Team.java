@@ -76,13 +76,13 @@ public class Team {
             if (player.getId().equals(goal.getScorer())) {
                 player.recordGoal();
             }
-    
             if (goal.getAssist() != null && player.getId().equals(goal.getAssist())) {
                 player.recordAssist();
             }
         });
     }
 
+    // we assume in this method that every oplayer on the team plays every game
     public void incrementGamesPlayed() {
         this.getPlayers().forEach(player -> {
             player.recordGame();
@@ -90,17 +90,15 @@ public class Team {
     }
 
     public int countGoalsByType(Season season, String playerId, GoalType goalType) {
-    int goalCount = 0;
-
-    for (Match match : season.getMatches()) {
-        for (Goal goal : match.getGoals()) {
-            if (goal.getScorer().equals(playerId) && goal.getGoalType().equals(goalType)) {
-                goalCount++;
+        int goalCount = 0;
+        for (Match match : season.getMatches()) {
+            for (Goal goal : match.getGoals()) {
+                if (goal.getScorer().equals(playerId) && goal.getGoalType().equals(goalType)) {
+                    goalCount++;
+                }
             }
         }
-    }
-
-    return goalCount;
+        return goalCount;
     }
 
     @Override

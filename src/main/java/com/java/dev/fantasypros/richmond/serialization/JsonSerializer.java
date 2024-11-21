@@ -117,7 +117,7 @@ public class JsonSerializer {
         playerJson.addProperty("id", player.getId());
         playerJson.addProperty("name", player.getName());
         playerJson.addProperty("position", player.getPos());
-        playerJson.addProperty("number", player.getNum());
+        playerJson.addProperty("number", player.getJerseyNum());
         playerJson.addProperty("nationality", player.getNationality());
         playerJson.addProperty("games", player.getGamesPlayed());
         playerJson.addProperty("goals", player.getGoals());
@@ -126,17 +126,16 @@ public class JsonSerializer {
         return playerJson;
     }
     
-// return a Json Object mapped to a single Goal object
-private static JsonObject serializeGoalObjectToJson(Goal goal) {
-    JsonObject goalJson = new JsonObject();
-    goalJson.addProperty("playerId", goal.getScorer());
-    goalJson.addProperty("minute", goal.getGoalMinute());
-    goalJson.addProperty("goalType", goal.getGoalType().getType());
-    goalJson.addProperty("assistedBy", goal.getAssist());
+    // return a Json Object mapped to a single Goal object
+    private static JsonObject serializeGoalObjectToJson(Goal goal) {
+        JsonObject goalJson = new JsonObject();
+        goalJson.addProperty("playerId", goal.getScorer());
+        goalJson.addProperty("minute", goal.getGoalMinute());
+        goalJson.addProperty("goalType", goal.getGoalType().getType());
+        goalJson.addProperty("assistedBy", goal.getAssist());
 
-    return goalJson;
-}
-
+        return goalJson;
+    }
 
     private static JsonObject serializeScoreObjectToJson(Match match) {
         JsonObject scoreJson = new JsonObject();
@@ -147,16 +146,15 @@ private static JsonObject serializeGoalObjectToJson(Goal goal) {
         return scoreJson;
     }
 
-private static JsonObject serializeGoalBreakdownToJson(Season season, Player player, Team team) {
-    JsonObject scoreJson = new JsonObject();
+    private static JsonObject serializeGoalBreakdownToJson(Season season, Player player, Team team) {
+        JsonObject scoreJson = new JsonObject();
 
-    for (GoalType goalType : GoalType.values()) {
-        int goalCount = team.countGoalsByType(season, player.getId(), goalType);
-        scoreJson.addProperty(goalType.getType(), goalCount);
+        for (GoalType goalType : GoalType.values()) {
+            int goalCount = team.countGoalsByType(season, player.getId(), goalType);
+            scoreJson.addProperty(goalType.getType(), goalCount);
+        }
+
+        return scoreJson;
     }
-
-    return scoreJson;
-}
-
 
 }

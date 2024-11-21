@@ -60,17 +60,23 @@ public class Match {
         return this.score;
     }
 
+    // allows direct access to update the score from the match object instead of using match.getScore().setScore(home, away)
     public void setScore(int homeScore, int awayScore) {
         this.score.setHomeScore(homeScore);
         this.score.setAwayScore(awayScore);
     }
 
-    public void recordGoal(Goal goal) {
-        this.goals.add(goal);
-    }
-
     public List<Goal> getGoals() {
         return this.goals;
+    }
+
+    public void setGoals(List<Goal> goalSet) {
+        this.goals = goalSet;
+    }
+
+    // in real life we might want this method to also call updateScore(goal.team). Currently we retrieve final scores from the FP loader
+    public void recordGoal(Goal goal) {
+        this.goals.add(goal);
     }
     
     public void updateScore(String scoringTeam) {
@@ -90,6 +96,7 @@ public class Match {
         return this.score.getHomeScore() < this.score.getAwayScore();
     }
 
+    // returns the match result from the perspective of the team passed in the argument
     public char getResult(Team team) {
         if (this.score.getHomeScore() == this.score.getAwayScore()) {
             return 'D';
