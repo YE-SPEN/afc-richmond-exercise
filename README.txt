@@ -13,6 +13,9 @@ Build: mvn clean install
 Test: mvn clean test
 Run: mvn spring-boot:run
 
+Endpoints:
+Team Roster: /team
+Player Card: /player/{id} (i.e. /player/JT9 for Jamie Tartt)
 
 File Structure
 ===========================
@@ -34,10 +37,10 @@ JSON Loader Files
     2. MatchLoader.java (Takes a Team object as argument and loads the matches and associated goals from the second FP endpoint)
 
 JSON Serializer
-    1. JsonSerializaer.java (Responsible for converting all Java objects into JSON)
+    1. JsonSerializer.java (Responsible for converting all Java objects into JSON)
 
 Unit Test Files
-    1. TeamSerializationTest.java (Responsible for comapring JSON output for the Team Roster page)
+    1. TeamSerializationTest.java (Responsible for comparing JSON output for the Team Roster page)
     2. PlayerCardSerializationTest.java (Responsible for comparing JSON output for the Player Card page)
     3. Expected Output JSON files for /team and /player/JT9 (Jamie Tartt)
 
