@@ -13,6 +13,9 @@ Build: mvn clean install
 Test: mvn clean test
 Run: mvn spring-boot:run
 
+Endpoints:
+Team Roster: /team
+Player Card: /player/{id} (i.e. /player/JT9 for Jamie Tartt)
 
 File Structure
 ===========================
