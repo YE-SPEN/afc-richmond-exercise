@@ -21,14 +21,16 @@ public class MatchLoader {
             loadMatchesBySeason(rootNode, season, team);
 
             return team;
+
         } catch (IOException | InterruptedException e) {
             System.err.println("Error loading matches: " + e.getMessage());
         }
         return team;
     }
 
-    private static void loadMatchesBySeason(JsonObject rootNode, Season season, Team team) {
-        JsonArray matchesArray = rootNode.getAsJsonArray("matches");
+    private static void loadMatchesBySeason(JsonObject rootNode, Season season, Team team) {     
+         JsonArray matchesArray = rootNode.getAsJsonArray("matches");
+    
         if (matchesArray != null) {
             for (JsonElement matchNode : matchesArray) {
                 JsonObject matchJson = matchNode.getAsJsonObject();
@@ -57,7 +59,7 @@ public class MatchLoader {
                 }
             }
         }
-        team.addSeason(season);
+        team.addSeason(season); 
     }    
 
     public static Goal loadGoal(JsonObject goalNode) {

@@ -13,8 +13,12 @@ import com.java.dev.fantasypros.richmond.exceptions.SerializationFailureExceptio
 import com.java.dev.fantasypros.richmond.objects.Player;
 import com.java.dev.fantasypros.richmond.objects.Team;
 import com.java.dev.fantasypros.richmond.serialization.JsonSerializer;
+
+import jakarta.servlet.http.HttpServletResponse;
+
 import com.java.dev.fantasypros.richmond.objects.Season;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -27,8 +31,8 @@ public class RichmondController {
     */ 
 
     @GetMapping("/")
-    public String getHome() {
-        return "redirect:/team";
+    public void getHome(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/team");
     }
 
     @GetMapping(path="/team", produces="application/json; charset=utf-8")
@@ -44,10 +48,10 @@ public class RichmondController {
 
     @GetMapping(path="/player/{id}",  produces="application/json; charset=utf-8")
     public String getPlayerDetails(@PathVariable("id") String playerId) {
-        Team team = RichmondApplication.getTeam();
+        Team team = RichmondApplication.getTeam(); // this assumes every player requested plays for AFC Richmond
         Player player = team.getPlayerById(playerId);
-        List<Season> seasons = team.getSeasons();
-        Season season = seasons.get(0);
+        List<Season> seasons = team.getSeasons();   
+        Season season = seasons.get(0); // this logic would also need to be changed to support multiple seasons, could become a loop to return all seasons or take the requested season in a URL parameter
 
         try {
             String playerCardJson = JsonSerializer.serializePlayerCard(team, player, season);

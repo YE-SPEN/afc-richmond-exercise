@@ -7,7 +7,7 @@ package com.java.dev.fantasypros.richmond.exceptions;
 public class SerializationFailureException extends Exception {
 
     public SerializationFailureException() {
-        super("Failed to deserialize data from Endpoint");
+        super("Failed to serialize data to Endpoint");
     }
 
     public SerializationFailureException(String message) {
