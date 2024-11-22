@@ -30,24 +30,24 @@ public class MatchLoader {
     private static void loadMatchesBySeason(JsonObject rootNode, Season season, Team team) {
         JsonArray matchesArray = rootNode.getAsJsonArray("matches");
         if (matchesArray != null) {
-            for (JsonElement matchElement : matchesArray) {
-                JsonObject matchNode = matchElement.getAsJsonObject();
-                String id = matchNode.get("matchId").getAsString();
-                String homeTeam = matchNode.get("homeTeam").getAsString();
-                String awayTeam = matchNode.get("awayTeam").getAsString();
-                LocalDate date = LocalDate.parse(matchNode.get("date").getAsString());
+            for (JsonElement matchNode : matchesArray) {
+                JsonObject matchJson = matchNode.getAsJsonObject();
+                String id = matchJson.get("matchId").getAsString();
+                String homeTeam = matchJson.get("homeTeam").getAsString();
+                String awayTeam = matchJson.get("awayTeam").getAsString();
+                LocalDate date = LocalDate.parse(matchJson.get("date").getAsString());
     
                 if (team.getTeamName().equals(homeTeam) || team.getTeamName().equals(awayTeam)) {
                     Match match = new Match(id, homeTeam, awayTeam, date);
 
                     team.incrementGamesPlayed();  // here we are assuming that every player gets a game played for each match
                     
-                    JsonObject scoreNode = matchNode.getAsJsonObject("score");
+                    JsonObject scoreNode = matchJson.getAsJsonObject("score");
                     int homeScore = scoreNode != null ? scoreNode.get("home").getAsInt() : 0;
                     int awayScore = scoreNode != null ? scoreNode.get("away").getAsInt() : 0;
                     match.setScore(homeScore, awayScore);
     
-                    JsonArray goalArray = matchNode.getAsJsonArray("goals");
+                    JsonArray goalArray = matchJson.getAsJsonArray("goals");
                     for (JsonElement goalElement : goalArray) {
                         Goal goal = loadGoal(goalElement.getAsJsonObject());
                         team.updatePlayerStats(goal);
@@ -68,7 +68,7 @@ public class MatchLoader {
                 ? goalNode.get("assistedBy").getAsString()
                 : null;
         Goal.GoalType type = Goal.resolveGoalType(goalNode.get("type").getAsString());
-        return assist != null ? new Goal(team, scorer, minute, type, assist) : new Goal(team, scorer, minute, type);
+        return new Goal(team, scorer, minute, type, assist);
     }
     
 }

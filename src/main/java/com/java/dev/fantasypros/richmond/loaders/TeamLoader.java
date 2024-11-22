@@ -36,9 +36,9 @@ public class TeamLoader {
 
             JsonArray playersArray = rootNode.getAsJsonArray("players");
 
-            for (JsonElement playerElement : playersArray) {
+            for (JsonElement playerNode : playersArray) {
                 try {
-                    Player player = loadPlayer(playerElement.getAsJsonObject());
+                    Player player = loadPlayer(playerNode.getAsJsonObject());
                     if (player != null) {
                         players.add(player);
                     }

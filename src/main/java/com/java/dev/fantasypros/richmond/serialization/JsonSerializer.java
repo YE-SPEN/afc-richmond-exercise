@@ -30,8 +30,8 @@ public class JsonSerializer {
             JsonArray matchesArray = serializeMatchObjectsToJson(team, player, season);
             playerCardJson.add("matches", matchesArray);
     
-            // Convert to JSON string using Gson
             return gson.toJson(playerCardJson);
+
         } catch (NullPointerException e) {
             throw new SerializationFailureException(e.getMessage());
         }
@@ -50,6 +50,8 @@ public class JsonSerializer {
             if (match.getHomeTeam().equals(team.getTeamName()) || match.getAwayTeam().equals(team.getTeamName())) {
 
                 JsonObject matchJson = new JsonObject();
+                matchJson.addProperty("matchId", match.getMatchId());
+                matchJson.addProperty("date", match.getMatchDate());
                 matchJson.addProperty("homeTeam", match.getHomeTeam());
                 matchJson.addProperty("awayTeam", match.getAwayTeam());
                 matchJson.addProperty("result", match.getResult(team));
@@ -96,7 +98,6 @@ public class JsonSerializer {
     
             JsonArray playersArray = new JsonArray();
             
-            // Iterate through each player in the team and add their stats
             for (Player player : team.getPlayers()) {
                 JsonObject playerJson = serializePlayerObjectToJson(player);
                 playersArray.add(playerJson);
@@ -111,7 +112,6 @@ public class JsonSerializer {
 
     }
 
-    // return a Json Object mapped to a single Player object
     public static JsonObject serializePlayerObjectToJson(Player player) {
         JsonObject playerJson = new JsonObject();
         playerJson.addProperty("id", player.getId());
@@ -126,7 +126,6 @@ public class JsonSerializer {
         return playerJson;
     }
     
-    // return a Json Object mapped to a single Goal object
     private static JsonObject serializeGoalObjectToJson(Goal goal) {
         JsonObject goalJson = new JsonObject();
         goalJson.addProperty("playerId", goal.getScorer());
