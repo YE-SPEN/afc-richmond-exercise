@@ -44,13 +44,13 @@ public class RichmondController {
 
     @GetMapping(path="/player/{id}",  produces="application/json; charset=utf-8")
     public String getPlayerDetails(@PathVariable("id") String playerId) {
-        Team richmond = RichmondApplication.getTeam();
-        Player player = richmond.getPlayerById(playerId);
-        List<Season> seasons = RichmondApplication.getSeasons();
+        Team team = RichmondApplication.getTeam();
+        Player player = team.getPlayerById(playerId);
+        List<Season> seasons = team.getSeasons();
         Season season = seasons.get(0);
 
         try {
-            String playerCardJson = JsonSerializer.serializePlayerCard(richmond, player, season);
+            String playerCardJson = JsonSerializer.serializePlayerCard(team, player, season);
             return playerCardJson;
         }  catch (SerializationFailureException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while processing the request");
